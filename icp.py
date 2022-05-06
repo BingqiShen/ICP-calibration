@@ -3,12 +3,12 @@
 import open3d as o3d
 import numpy as np
 
-realsense_pc = o3d.read_point_cloud("realsense/ply/realsense.ply")
-ouster_pc = o3d.read_point_cloud("ouster/ply/ouster_trim.ply")
+realsense_pc = o3d.read_point_cloud("bpearl/ply/bpearl_trim.ply")
+ouster_pc = o3d.read_point_cloud("velodyne/ply/velodyne_trim.ply")
 
 
 # 为两个点云上上不同的颜色
-realsense_pc.paint_uniform_color([0, 0.651, 0.929])#target 为蓝色
+realsense_pc.paint_uniform_color([0, 0.651, 0.929]) #target 为蓝色
 ouster_pc.paint_uniform_color([1, 0.706, 0])    #source 为黄色
 
 # 切记，将稠密点云当作src，将稀疏点云当作target
@@ -25,12 +25,14 @@ processed_target, outlier_index = o3d.geometry.radius_outlier_removal(ouster_pc,
 #果在这个球体中其他的点的数量小于 nb_points, 这个算法会将这个点判断为特例，并删除。
 
 
-threshold = 0.5  #移动范围的阀值
+threshold = 0.2  #移动范围的阀值
 # src2target,using mechanical params
-trans_init = np.asarray([[ 2.44818944e-02, -2.39965460e-01, 9.72988566e-01, 3.827527808e-02],
- [-1.00014007e+00, -6.28659934e-04, 2.47967056e-02, 6.12779554e-03],
- [ 2.05056183e-02, -9.73096184e-01, -2.39954941e-01, -1.12224287e-01],
+trans_init = np.asarray([[ 0.04329846, -0.01643883, 0.99456508, 0.2460109],
+ [0.01637754, 1.00455503, 0.01501039, 0.07250645],
+ [ -0.99983395, 0.01392359, 0.04123204, -0.18782889],
  [ 0.00000000e+00, 0.00000000e+00, 0.00000000e+00, 1.00000000e+00]])
+
+# trans_init = np.linalg.inv(trans_init)
 
 #运行icp
 reg_p2p = o3d.registration.registration_icp(
