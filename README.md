@@ -1,6 +1,8 @@
 # ICP-calibration
 A method to calibrate the extrinsics of sensors(eg: ouster and realsense D455) using ICP
 
+适配open3d-0.13.0版本
+
 ## bag to pcd
 一个终端通过ros发送messages，如:
 ```
@@ -45,3 +47,5 @@ pcl_pcd2ply xxx.pcd xxx.ply
 
 ## run icp
 python icp.py
+
+得到稠密到稀疏的转换
